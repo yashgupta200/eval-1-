@@ -1,0 +1,81 @@
+class EmployeeManagementSystem:
+    def __init__(self):
+        self.employees = {}  # Dictionary to store employee records
+
+    def add_employee(self, emp_id, name, department, salary):
+        """Add a new employee to the system."""
+        if emp_id in self.employees:
+            print(f"Employee with ID {emp_id} already exists.")
+            return
+        self.employees[emp_id] = {
+            'name': name,
+            'department': department,
+            'salary': salary
+        }
+        print(f"Employee {name} added successfully.")
+
+    def update_employee(self, emp_id, name=None, department=None, salary=None):
+        """Update an existing employee's details."""
+        if emp_id not in self.employees:
+            print(f"Employee with ID {emp_id} not found.")
+            return
+        if name is not None:
+            self.employees[emp_id]['name'] = name
+        if department is not None:
+            self.employees[emp_id]['department'] = department
+        if salary is not None:
+            self.employees[emp_id]['salary'] = salary
+        print(f"Employee with ID {emp_id} updated successfully.")
+
+    def search_employee_by_id(self, emp_id):
+        """Search for an employee by ID."""
+        if emp_id in self.employees:
+            emp_details = self.employees[emp_id]
+            return emp_details
+        else:
+            print(f"Employee with ID {emp_id} not found.")
+            return None
+
+    def generate_department_report(self):
+        """Generate a report of employees grouped by department."""
+        department_report = {}
+        for emp_id, details in self.employees.items():
+            dept = details['department']
+            if dept not in department_report:
+                department_report[dept] = []
+            department_report[dept].append({
+                'ID': emp_id,
+                'Name': details['name'],
+                'Salary': details['salary']
+            })
+        return department_report
+
+    def display_department_report(self):
+        """Display the department-wise employee report."""
+        report = self.generate_department_report()
+        for department, employees in report.items():
+            print(f"Department: {department}")
+            for emp in employees:
+                print(f"  ID: {emp['ID']}, Name: {emp['Name']}, Salary: {emp['Salary']}")
+            print()  # Newline for better readability
+
+
+# Example usage
+if __name__ == "__main__":
+    ems = EmployeeManagementSystem()
+
+    # Adding employees
+    ems.add_employee(1, 'Alice Smith', 'Engineering', 75000)
+    ems.add_employee(2, 'Bob Johnson', 'Marketing', 60000)
+    ems.add_employee(3, 'Charlie Brown', 'Engineering', 80000)
+
+    # Updating an employee
+    ems.update_employee(2, salary=65000)
+
+    # Searching for an employee by ID
+    emp = ems.search_employee_by_id(1)
+    if emp:
+        print(f"Employee Details: Name: {emp['name']}, Department: {emp['department']}, Salary: {emp['salary']}")
+
+    # Displaying department-wise report
+    ems.display_department_report()
